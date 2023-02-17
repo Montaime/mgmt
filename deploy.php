@@ -12,16 +12,12 @@ set('rsync_src', function () {
     return __DIR__;
 });
 
-// Hosts
 host('209.145.62.20') // Name of the server
 ->setRemoteUser('deployer') // SSH user
-->setPort(22) // web host wants this port
-->setIdentityFile('~/.ssh/gitlab')
-    ->setDeployPath('/var/www/dashnet') // Deploy path
+->setPort(22)
+    ->setDeployPath('/var/www/usher') // Deploy path
     ->set('labels', ['stage' => 'production']);
 
-// Configuring the rsync exclusions.
-// You'll want to exclude anything that you don't want on the production server.
 add('rsync', [
     'exclude' => [
         '.git',
@@ -29,7 +25,7 @@ add('rsync', [
         '/storage/',
         '/vendor/',
         '/node_modules/',
-        '.gitlab-ci.yml',
+        '.github',
         'deploy.php',
     ],
 ]);
@@ -68,7 +64,7 @@ task('launch', [
     'deploy:release',
     //'fix:folders',
     'rsync', // Deploy code & built assets
-    //'deploy:secrets', // Deploy secrets
+    'deploy:secrets', // Deploy secrets
     'deploy:shared',
     'deploy:writable',
     'deploy:vendors',
