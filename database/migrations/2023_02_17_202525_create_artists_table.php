@@ -13,6 +13,26 @@ return new class extends Migration
     {
         Schema::create('artists', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->foreignId('user_id');
+
+            $table->string('pixel_id')->nullable();
+            $table->string('adwords_id')->nullable();
+            $table->string('domain')->nullable();
+
+            $table->string('social_website')->nullable();
+            $table->string('social_instagram')->nullable();
+            $table->string('social_twitter')->nullable();
+            $table->string('social_facebook')->nullable();
+            $table->string('social_youtube')->nullable();
+
+            $table->string('social_youtube_music')->nullable();
+            $table->string('social_spotify')->nullable();
+            $table->string('social_apple')->nullable();
+            $table->string('social_deezer')->nullable();
+            $table->string('social_soundcloud')->nullable();
+            $table->string('social_bandcamp')->nullable();
+            $table->string('social_tidal')->nullable();
             $table->timestamps();
         });
     }
