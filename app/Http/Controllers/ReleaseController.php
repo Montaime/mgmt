@@ -2,27 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artist;
 use App\Models\Release;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Inertia\Inertia;
 
 class ReleaseController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(): \Inertia\Response
     {
-        //
+        return Inertia::render('Dashboard/Releases/Index', [
+            'releases' => Release::all()
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create(): \Inertia\Response
     {
-        //
+        return Inertia::render('Dashboard/Releases/Create');
     }
 
     /**
@@ -30,7 +34,14 @@ class ReleaseController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        //
+        $release = new Release();
+        $release->title = $request->string('title');
+        $release->slug = $request->string('slug');
+        $release->artist_id = 1;
+        $release->cover_url = '';
+        $release->save();
+
+        return redirect($release->slug);
     }
 
     /**

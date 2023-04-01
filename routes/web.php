@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -20,23 +21,19 @@ Route::get('/', function () {
     return Inertia::render('Home');
 });
 
-Route::get('/@{artist}', function ($artist) {
+Route::get('/invite/{invite}', function (\App\Models\Invite $invite) {
+    return Inertia::render('Onboarding', [
+        'invite' => $invite
+    ]);
+});
+
+Route::get('/@{artist:slug}', function (\App\Models\Artist $artist) {
     return Inertia::render('Artist', [
-        'artist' => [
-            'name' => $artist
-        ]
+        'artist' => $artist
     ]);
 });
 
-Route::get('/{slug}', function ($slug) {
-    return Inertia::render('Release', [
-        'release' => [
-            'title' => $slug
-        ]
-    ]);
-});
-
-Route::prefix('app')->group(function () {
+Route::prefix('app')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', function () {
         return Inertia::render('Dashboard/Home');
     })->name('app::home');
@@ -49,6 +46,8 @@ Route::prefix('app')->group(function () {
     Route::delete('artist/{artist}', [\App\Http\Controllers\ArtistController::class, 'destroy'])->name('app::artists.delete');
 
     Route::get('invites', [\App\Http\Controllers\InviteController::class, 'index'])->name('app::invites.index');
+    Route::get('invites/new', [\App\Http\Controllers\InviteController::class, 'create'])->name('app::invites.create');
+    Route::post('invites/new', [\App\Http\Controllers\InviteController::class, 'store'])->name('app::invites.create');
     Route::get('invite/{invite}', [\App\Http\Controllers\InviteController::class, 'show'])->name('app::invites.show');
     Route::get('invite/{invite}/edit', [\App\Http\Controllers\InviteController::class, 'edit'])->name('app::invites.edit');
     Route::post('invite/{invite}/edit', [\App\Http\Controllers\InviteController::class, 'update'])->name('app::invites.update');
@@ -60,7 +59,9 @@ Route::prefix('app')->group(function () {
     Route::post('user/{user}/edit')->name('app::users.update');
     Route::delete('user/{user}')->name('app::users.delete');
 
-    Route::get('releases')->name('app::releases.index');
+    Route::get('releases', [\App\Http\Controllers\ReleaseController::class, 'index'])->name('app::releases.index');
+    Route::get('releases/new', [\App\Http\Controllers\ReleaseController::class, 'create'])->name('app::releases.create');
+    Route::post('releases/new', [\App\Http\Controllers\ReleaseController::class, 'store'])->name('app::releases.store');
     Route::get('release/{release}')->name('app::releases.show');
     Route::get('release/{release}/edit')->name('app::releases.edit');
     Route::post('release/{release}/edit')->name('app::releases.update');
@@ -74,3 +75,9 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/{release:slug}', function (\App\Models\Release $release) {
+    return Inertia::render('Release', [
+        'release' => $release->load('artist')
+    ]);
+});

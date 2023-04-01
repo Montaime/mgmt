@@ -14,11 +14,8 @@ return new class extends Migration
         Schema::create('invites', function (Blueprint $table) {
             $table->id();
             $table->string('note')->nullable();
-            $table->string('code')->nullable();
-            $table->unsignedInteger('uses');
-            $table->unsignedInteger('maxuses')->nullable();
-            $table->unsignedTinyInteger('plan')->default(0);
-            $table->timestamp('plan_expires_at')->nullable();
+            $table->string('code')->unique();
+            $table->foreignId('artist_id')->unique();
             $table->timestamps();
         });
     }

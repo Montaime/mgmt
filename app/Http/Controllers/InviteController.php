@@ -6,15 +6,18 @@ use App\Models\Invite;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Inertia\Inertia;
 
 class InviteController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(): \Inertia\Response
     {
-        //
+        return Inertia::render('Dashboard/Invites/Index', [
+            'invites' => Invite::all()
+        ]);
     }
 
     /**
@@ -22,7 +25,7 @@ class InviteController extends Controller
      */
     public function create(): Response
     {
-        //
+        return Inertia::render();
     }
 
     /**

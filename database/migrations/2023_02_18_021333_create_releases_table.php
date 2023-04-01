@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('releases', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->string('cover_url');
             $table->foreignId('artist_id');
 

@@ -14,7 +14,11 @@ return new class extends Migration
         Schema::create('artists', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
+            $table->string('bio')->nullable();
             $table->foreignId('user_id');
+
+            $table->text('payment')->nullable();
 
             $table->string('pixel_id')->nullable();
             $table->string('adwords_id')->nullable();

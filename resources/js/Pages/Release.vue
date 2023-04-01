@@ -14,13 +14,13 @@ defineProps({
 
         <div class="max-w-7xl mx-auto p-6 lg:p-8">
             <div class="flex justify-center">
-                <div class="y space-y-4 rounded overflow-clip bg-gray-900 dark:bg-white max-w-lg">
+                <div class="y space-y-4 rounded-lg shadow-xl overflow-clip bg-gray-900 dark:bg-white max-w-lg">
                     <div class="flex flex-col items-center justify-between">
                         <div class="relative aspect-square w-full bg-blue-500">
                             <img src=""/>
-                            <div class="opacity-75 absolute bottom-2 left-2">
-                                <p class="font-bold uppercase">{{ release['title'] }}</p>
-                                <p class="text-sm font-bold uppercase">Artist Name</p>
+                            <div class="opacity-75 absolute bottom-2 left-2 ">
+                                <p class="text-lg font-bold uppercase">{{ release['title'] }}</p>
+                                <p class="text-sm font-bold uppercase">{{ release['artist']['name'] }}</p>
                             </div>
                         </div>
                         <div class="flex flex-col">

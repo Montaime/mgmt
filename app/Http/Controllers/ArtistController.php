@@ -6,15 +6,19 @@ use App\Models\Artist;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Crypt;
+use Inertia\Inertia;
 
 class ArtistController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(): \Inertia\Response
     {
-        //
+        return Inertia::render('Dashboard/Artists/Index', [
+            'artists' => Artist::all()
+        ]);
     }
 
     /**
@@ -36,9 +40,14 @@ class ArtistController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Artist $artist): Response
+    public function show(Artist $artist): \Inertia\Response
     {
-        //
+        if($artist->payment) {
+            $artist->payment = Crypt::decryptString($artist->payment);
+        }
+        return Inertia::render('Dashboard/Artists/Show', [
+            'artist' => $artist
+        ]);
     }
 
     /**

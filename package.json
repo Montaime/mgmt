@@ -18,6 +18,8 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "pdfjs": "^2.4.7",
+        "vue-pdf": "^4.3.0",
         "ziggy-js": "^1.5.0"
     }
 }
